@@ -1,3 +1,7 @@
+machine:
+    python:
+        version: 3.5.0
+
 dependencies:
     override:
         - pip3 install -r requirements.txt
@@ -5,8 +9,8 @@ dependencies:
 #        - pyenv install -s 2.7.10
 #        - pyenv install -s 3.3.3
 #        - pyenv install -s 3.4.3
-        - pyenv install -s 3.5.0
-        - pyenv local 3.5.0
+#        - pyenv install -s 3.5.0
+#        - pyenv local 3.5.0
 
 test:
     override:
