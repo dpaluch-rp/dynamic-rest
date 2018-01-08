@@ -10,8 +10,18 @@ class User(models.Model):
     permissions = models.ManyToManyField('Permission', related_name='users')
     date_of_birth = models.DateField(null=True, blank=True)
     # 'related_name' intentionally left unset in location field below:
-    location = models.ForeignKey('Location', null=True, blank=True, on_delete=models.CASCADE)
-    favorite_pet_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.CASCADE)
+    location = models.ForeignKey(
+        'Location',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
+    favorite_pet_type = models.ForeignKey(
+        ContentType,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
     favorite_pet_id = models.TextField(null=True, blank=True)
     favorite_pet = GenericForeignKey(
         'favorite_pet_type',
@@ -29,7 +39,11 @@ class Profile(models.Model):
 class Cat(models.Model):
     name = models.TextField()
     home = models.ForeignKey('Location', on_delete=models.CASCADE)
-    backup_home = models.ForeignKey('Location', related_name='friendly_cats', on_delete=models.CASCADE)
+    backup_home = models.ForeignKey(
+        'Location',
+        related_name='friendly_cats',
+        on_delete=models.CASCADE
+    )
     hunting_grounds = models.ManyToManyField(
         'Location',
         related_name='annoying_cats',
@@ -82,7 +96,12 @@ class Event(models.Model):
     """
     name = models.TextField()
     status = models.TextField(default="current")
-    location = models.ForeignKey('Location', null=True, blank=True, on_delete=models.CASCADE)
+    location = models.ForeignKey(
+        'Location',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
     users = models.ManyToManyField('User')
 
 
