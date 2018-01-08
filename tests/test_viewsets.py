@@ -3,7 +3,6 @@ import json
 from django.test import TestCase
 from django.test.client import RequestFactory
 from rest_framework import exceptions, status
-from rest_framework.request import Request
 
 from dynamic_rest.filters import DynamicFilterBackend, FilterNode
 from tests.models import Dog, Group, User
@@ -22,10 +21,10 @@ class TestUserViewSet(TestCase):
         self.rf = RequestFactory()
 
     def test_get_request_fields(self):
-        request = Request(self.rf.get('/users/', {
+        request = self.rf.get('/users/', {
             'include[]': ['name', 'groups.permissions'],
             'exclude[]': ['groups.name']
-        }))
+        })
         self.view.request = request
         fields = self.view.get_request_fields()
 
@@ -39,10 +38,10 @@ class TestUserViewSet(TestCase):
 
     def test_get_request_fields_disabled(self):
         self.view.features = (self.view.INCLUDE)
-        request = Request(self.rf.get('/users/', {
+        request = self.rf.get('/users/', {
             'include[]': ['name', 'groups'],
             'exclude[]': ['groups.name']
-        }))
+        })
         self.view.request = request
         fields = self.view.get_request_fields()
 
@@ -53,8 +52,7 @@ class TestUserViewSet(TestCase):
 
     def test_get_request_fields_invalid(self):
         for invalid_field in ('groups..name', 'groups..'):
-            request = Request(
-                self.rf.get('/users/', {'include[]': [invalid_field]}))
+            request = self.rf.get('/users/', {'include[]': [invalid_field]})
             self.view.request = request
             self.assertRaises(
                 exceptions.ParseError,
@@ -142,7 +140,7 @@ class TestMergeDictConvertsToDict(TestCase):
         # Wrote UserNoMergeDictViewSet to raise an exception (return 400)
         # if request.data ends up as MergeDict, is not a dict, or
         # is a dict of lists.
-        request = Request(self.rf.post('/groups/', data))
+        request = self.rf.post('/groups/', data)
         try:
             response = self.view(request)
             self.assertEqual(response.status_code, 201)
