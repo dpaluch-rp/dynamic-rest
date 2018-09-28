@@ -205,7 +205,7 @@ class WithDynamicViewSetMixin(object):
         Returns a queryset for this request.
         """
         serializer = self.get_serializer()
-        return getattr(self, 'queryset', serializer.Meta.model.objects.all())
+        return getattr(self, 'queryset', None) or serializer.Meta.model.objects.all()
 
     def get_request_fields(self):
         """Parses the INCLUDE and EXCLUDE features.
