@@ -200,12 +200,9 @@ class WithDynamicViewSetMixin(object):
 
         return params_map
 
-    def get_queryset(self, queryset=None):
+    def get_queryset(self):
         """
         Returns a queryset for this request.
-
-        Arguments:
-          queryset: Optional root-level queryset.
         """
         serializer = self.get_serializer()
         return getattr(self, 'queryset', serializer.Meta.model.objects.all())
